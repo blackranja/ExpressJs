@@ -1,4 +1,10 @@
 const http = require('http');
+const { readFileSync } = require('fs');
+//get all files
+const homePage = readFileSync('./index.html');
+const homeStyles = readFileSync('./index.css');
+const homeImage = readFileSync('./assets/logo.svg');
+const homeLogic = readFileSync('./first.js');
 const server = http.createServer((req, res) => {
     console.log(req.method);
     console.log(req.url);
@@ -7,14 +13,30 @@ const server = http.createServer((req, res) => {
         res.writeHead(200,
             { 'content-type': 'text/html' },
         )
-        res.write('<h1>Home Page</h1>');
+        res.write(homePage);
         res.end()
     }
-    else if (url === '/about') {
+    else if (url === '/index.css') {
         res.writeHead(200,
-            { 'content-type': 'text/html' },
+            { 'content-type': 'text/css' },
         )
-        res.write('<h1>About Page</h1>');
+        res.write(homeStyles);
+        res.end()
+
+    }
+    else if (url === '/assets/logo.svg') {
+        res.writeHead(200,
+            { 'content-type': 'image/svg+xml' },
+        )
+        res.write(homeImage);
+        res.end()
+
+    }
+    else if (url === '/first.js') {
+        res.writeHead(200,
+            { 'content-type': 'text/javascript' },
+        )
+        res.write(homeLogic);
         res.end()
 
     }
