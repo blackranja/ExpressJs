@@ -1,58 +1,18 @@
-const http = require('http');
-const { readFileSync } = require('fs');
-//get all files
-const homePage = readFileSync('./index.html');
-const homeStyles = readFileSync('./index.css');
-const homeImage = readFileSync('./assets/logo.svg');
-const homeLogic = readFileSync('./first.js');
-const server = http.createServer((req, res) => {
-    console.log(req.method);
-    console.log(req.url);
-    const url = req.url;
-    if (url === '/') {
-        res.writeHead(200,
-            { 'content-type': 'text/html' },
-        )
-        res.write(homePage);
-        res.end()
-    }
-    else if (url === '/index.css') {
-        res.writeHead(200,
-            { 'content-type': 'text/css' },
-        )
-        res.write(homeStyles);
-        res.end()
+const express = require('express');
+const path = require('path');
+const app = express();
+app.use(express.static('./public'))
 
-    }
-    else if (url === '/assets/logo.svg') {
-        res.writeHead(200,
-            { 'content-type': 'image/svg+xml' },
-        )
-        res.write(homeImage);
-        res.end()
-
-    }
-    else if (url === '/first.js') {
-        res.writeHead(200,
-            { 'content-type': 'text/javascript' },
-        )
-        res.write(homeLogic);
-        res.end()
-
-    }
-    else {
-        res.writeHead(
-            404,
-            { 'content-type': 'text/html' }
-        )
-        res.write(
-            '<h1>Page not found</h1>'
-        )
-        res.end()
-
-    }
+app.get('/', (req, res) => {
+    res.sendFile(path.resolve(__dirname, './navBar/index.html'))
 
 })
-server.listen(5000, () => {
-    console.log("Server Listening on port 5000....");
+
+app.all('*', (req, res) => {
+    res.status(404)
+        .send('Resource not Found')
+})
+
+app.listen(5000, () => {
+    console.log("Server is listening on port 5000...");
 })
