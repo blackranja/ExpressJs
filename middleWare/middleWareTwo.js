@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-let { people } = require('./data');
+let { people } = require('../data');
 
 //Static Assests 
 app.use(express.static('./methods-public'));
